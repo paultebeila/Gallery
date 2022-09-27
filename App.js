@@ -12,19 +12,26 @@ export default function App() {
   const [hasMedLabPermission, setHasMedLabPermission] = useState();
   const [photo, setPhoto] = useState();
 
-  useEffect(() => {
+  /*useRef(() => {
     (async() =>{
       const camPerm = await Camera.requestCameraPermissionsAsync();
-      const medLabPerm = await MediaLibrary.requestPermissionsAsync();
       setHasCamPermission(camPerm.status === "Granted");
-      setHasMedLabPermission(medLabPerm.status === "Granted");
+      });
+    },[]);*/
+
+  useEffect(() => {
+    (async () => {
+      const camPerm = await Camera.requestCameraPermissionsAsync();
+      const medLabPerm = await MediaLibrary.requestPermissionsAsync();
+      setHasCamPermission(camPerm.status==="granted")
+      setHasCamPermission(medLabPerm.status==="granted")
     })();
   }, []);
 
   if (hasCamPermission === undefined) {
     return <Text> Requesting permission...</Text>
   } else if(!hasCamPermission) {
-    return <Text style={{marginTop: '50%'}}>Permission for the camera is not granted. Please allow access to camera in settings.</Text>
+    return <Text style={{marginTop: '25%'}}>Permission for the camera is not granted. Please allow access to camera in settings.</Text>
   }
   let takePhoto = async () => {
     let options = {
@@ -43,15 +50,19 @@ export default function App() {
       });
     };
     let savePhoto = () => {
-      MediaLibrary.saveToLibraryAsync(photo.uri).then(()=>{
+      // MediaLibrary.saveToLibraryAsync(photo.uri).then(()=>{
+      //   setPhoto(undefined);
+      // });
+      MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
         setPhoto(undefined);
-      });
+      })
     };
     return (
       <SafeAreaView style={styles.container}>
         <Image style={styles.preview} source={{uri: "data:image/jpg;base64,"+ photo.base64}} />
         <Button title="Share" onPress={sharePic} />
-        {hasMedLabPermission ? <Button title="Save" onPress={savePhoto} /> : undefined}
+        {/* {hasMedLabPermission ? <Button title="Save" onPress={savePhoto} /> : undefined} */}
+        <Button title='Save' onPress={savePhoto} />
         <Button title="Discard" onPress={() => setPhoto(undefined)} />
       </SafeAreaView>
     )
