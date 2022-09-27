@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View, SafeAreaView, Button, Image } from 'react-native';
+import { Button, StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { Camera } from 'expo-camera';
 import { shareAsync } from 'expo-sharing';
@@ -21,10 +21,10 @@ export default function App() {
     })();
   }, []);
 
-  if(hasCamPermission === undefined) {
+  if (hasCamPermission === undefined) {
     return <Text> Requesting permission...</Text>
   } else if(!hasCamPermission) {
-    return <Text>Permission for the camera is not granted. Please allow access to camera in settings.</Text>
+    return <Text style={{marginTop: '50%'}}>Permission for the camera is not granted. Please allow access to camera in settings.</Text>
   }
   let takePhoto = async () => {
     let options = {
